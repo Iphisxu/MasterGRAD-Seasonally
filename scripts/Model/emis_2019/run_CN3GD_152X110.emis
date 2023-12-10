@@ -5,10 +5,10 @@ source ./config_cmaq.csh intel
 cd PREP/emis_2019
 
 # setenv STDATE 2019182 # 20190701
-setenv STDATE 2019244 # 20190901
+# setenv STDATE 2019244 # 20190901
 setenv EMISDATE `expr ${STDATE} - 62`
 
-setenv GRID_NAME CN3GD_152X110
+# setenv GRID_NAME CN3GD_152X110
 
 set TODAY  = `datshift $EMISDATE 0`
 set MM     = `date -ud "$TODAY" +%m`
