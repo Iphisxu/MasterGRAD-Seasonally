@@ -4,7 +4,8 @@ cd ../..
 source ./config_cmaq.csh intel
 cd PREP/emis_2019
 
-#setenv STDATE 2020234
+setenv STDATE 2019182 # 20190701
+setenv GRID_NAME CN27GD_182X138
 set TODAY  = `datshift $STDATE 0`
 set MM     = `date -ud "$TODAY" +%m`
 set WW     = `date -ud "$TODAY" +%u`
