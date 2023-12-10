@@ -4,9 +4,13 @@ cd ../..
 source ./config_cmaq.csh intel
 cd PREP/emis_2019
 
-setenv STDATE 2019182 # 20190701
-setenv GRID_NAME CN27GD_182X138
-set TODAY  = `datshift $STDATE 0`
+# setenv STDATE 2019182 # 20190701
+setenv STDATE 2019244 # 20190901
+setenv EMISDATE `expr ${STDATE} - 62`
+
+setenv GRID_NAME CN3GD_152X110
+
+set TODAY  = `datshift $EMISDATE 0`
 set MM     = `date -ud "$TODAY" +%m`
 set WW     = `date -ud "$TODAY" +%u`
 setenv BSDATE  `sed -n "${MM}p" weekfile2015 | cut -f $WW`
@@ -23,7 +27,7 @@ setenv RES_FILE $CMAQ_HOME/PREP/emis_2019/ACEIC2014/emis.${GRID_NAME}.res.ncf
 #setenv AGR_FILE $CMAQ_HOME/PREP/emis/mix2010/emis.${GRID_NAME}.agr.ncf
 #setenv SHP_FILE $CMAQ_HOME/PREP/emis/mix2010/emis.${GRID_NAME}.shp.ncf
 setenv OTH_FILE $CMAQ_HOME/PREP/emis_2019/ACEIC2014/emis.${GRID_NAME}.oth.ncf
-setenv BIO_FILE /WORK/sysu_fq_1/xuyf/data/megan/GRAD_2019/MEGANv2.10_${GRID_NAME}_SAPRC07TIC_${STDATE}.ncf
+setenv BIO_FILE /WORK/sysu_fq_1/xuyf/data/megan/GRAD_2019/MEGANv2.10_${GRID_NAME}_SAPRC07TIC_${EMISDATE}.ncf
 setenv EPD_FILE $CMAQ_HOME/PREP/emis_2019/PATH2017/emiss_CB05.HongKong.${GRID_NAME}_${BSDATE}.ncf
 setenv EMIS_1  $CMAQ_DATA/emis/emis.${GRID_NAME}.ncf
 
