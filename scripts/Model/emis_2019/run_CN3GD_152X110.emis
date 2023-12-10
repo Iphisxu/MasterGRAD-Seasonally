@@ -1,0 +1,34 @@
+#!/bin/csh -f
+
+cd ../..
+source ./config_cmaq.csh intel
+cd PREP/emis_2019
+
+#setenv STDATE 2020234
+set TODAY  = `datshift $STDATE 0`
+set MM     = `date -ud "$TODAY" +%m`
+set WW     = `date -ud "$TODAY" +%u`
+setenv BSDATE  `sed -n "${MM}p" weekfile2015 | cut -f $WW`
+
+setenv IOAPI_OFFSET_64 NO
+
+#setenv GRID_NAME CN03PR
+setenv GRIDDESC $CMAQ_DATA/met/mcip/${GRID_NAME}/${STDATE}/GRIDDESC
+
+setenv POW_FILE $CMAQ_HOME/PREP/emis_2019/ACEIC2014/emis.${GRID_NAME}.pow.ncf
+setenv IND_FILE $CMAQ_HOME/PREP/emis_2019/ACEIC2014/emis.${GRID_NAME}.ind.ncf
+setenv RES_FILE $CMAQ_HOME/PREP/emis_2019/ACEIC2014/emis.${GRID_NAME}.res.ncf
+#setenv TRA_FILE $CMAQ_HOME/PREP/emis/mix2010/emis.${GRID_NAME}.tra.ncf
+#setenv AGR_FILE $CMAQ_HOME/PREP/emis/mix2010/emis.${GRID_NAME}.agr.ncf
+#setenv SHP_FILE $CMAQ_HOME/PREP/emis/mix2010/emis.${GRID_NAME}.shp.ncf
+setenv OTH_FILE $CMAQ_HOME/PREP/emis_2019/ACEIC2014/emis.${GRID_NAME}.oth.ncf
+setenv BIO_FILE /WORK/sysu_fq_1/xuyf/data/megan/GRAD_2019/MEGANv2.10_${GRID_NAME}_SAPRC07TIC_${STDATE}.ncf
+setenv EPD_FILE $CMAQ_HOME/PREP/emis_2019/PATH2017/emiss_CB05.HongKong.${GRID_NAME}_${BSDATE}.ncf
+setenv EMIS_1  $CMAQ_DATA/emis/emis.${GRID_NAME}.ncf
+
+setenv MAS_FILE ./mask_${GRID_NAME}_hongkong.ncf
+
+rm ${EMIS_1}
+time ./src/CREATE_EMIS_LIU
+
+
