@@ -122,6 +122,7 @@
 
 !... Get today's date
       sdate = ENVINT( 'STDATE', MESG, 0, ios )
+      sdate = sdate - 62 ! convert 0901 to 0701 -- by Evan
       stime = 0
       tstep = 10000
       jdate = sdate
@@ -129,6 +130,7 @@
 
 !... Get EPD emission day's date
       bdate = ENVINT( 'BSDATE', MESG, 0, ios )
+      bdate = bdate - 62 ! convert 0901 to 0701 -- by Evan
 
 !      write(*,*)GDNAM,CNAME,GDTYP3D,P_ALP3D,P_BET3D,P_GAM3D,XCENT3D,
 !     &               YCENT3D,XORIG3D,YORIG3D,XCELL3D,YCELL3D,NCOLS3D,
@@ -798,7 +800,7 @@
 
 !... set attribute
       FTYPE3D = GRDDED3
-      SDATE3D = sdate
+      SDATE3D = sdate + 62 ! convert 0701 to 0901 -- by Evan
       STIME3D = stime
       TSTEP3D = tstep
       MXREC3D = 25
