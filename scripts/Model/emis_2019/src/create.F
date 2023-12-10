@@ -130,7 +130,7 @@
 
 !... Get EPD emission day's date
       bdate = ENVINT( 'BSDATE', MESG, 0, ios )
-      bdate = bdate - 62 ! convert 0901 to 0701 -- by Evan
+      ! bdate = bdate - 62 ! convert 0901 to 0701 -- by Evan
 
 !      write(*,*)GDNAM,CNAME,GDTYP3D,P_ALP3D,P_BET3D,P_GAM3D,XCENT3D,
 !     &               YCENT3D,XORIG3D,YORIG3D,XCELL3D,YCELL3D,NCOLS3D,
@@ -795,7 +795,7 @@
 !.....4) Store the emission data
 !-----------------------------------------------------------------------
 !... Rset jdate and jtime
-      jdate = sdate
+      jdate = sdate + 62 ! convert 0701 to 0901 -- by Evan
       jtime = stime
 
 !... set attribute
