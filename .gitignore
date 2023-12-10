@@ -1,0 +1,5 @@
+documents/*
+data/*
+reports/*
+figures/*
+src/__pycache__
