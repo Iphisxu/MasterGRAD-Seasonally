@@ -171,7 +171,7 @@ def process_case_chem(case, year, month):
 
     gridfile   = 'D:/Data/Graduation/GRID/GRIDCRO2D_D03.nc'
     inputfile  = f'D:/Data/Graduation/COMBINE/Case_{scale}/COMBINE_ACONC_CN3GD_152X110_{year}_chem.nc'
-    outputfile = datadir + f'processed/{scale}_{month}_{year}/{month}_{year}_chem.nc'
+    outputfile = datadir + f'processed/{scale}_{year}/{month}_{year}_chem.nc'
 
     grid = xr.open_dataset(gridfile)
     chem = xr.open_dataset(inputfile)
