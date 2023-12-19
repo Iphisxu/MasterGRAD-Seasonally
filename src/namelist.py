@@ -47,8 +47,12 @@ rfpath = datadir + 'Contribution/RandomForest_output/'
 # ===================
 
 obs_dir = datadir + 'OBS/CHEM/'
-obsSep = obs_dir + 'selTime_Sep/'
-obsJul = obs_dir + 'selTime_Jul/'
+def get_obspath(month):
+    if month == "Jul":
+        obspath = obs_dir + 'selTime_Jul/'
+    elif month == "Sep":
+        obspath = obs_dir + 'selTime_Sep/'
+    return obspath
 
 # ===================
 # namelist for MEIC data
