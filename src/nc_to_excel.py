@@ -30,7 +30,11 @@ def nc_to_df(varlist, input_ds, level, mask_da, dfout):
 
 
 def write_to_excel(year, month, level, region,
-                   mcip_varlist, chem_varlist,):
+                   mcip_varlist, chem_varlist,case=None):
+    if case is None:
+        case = 'Annually'
+    else:
+        case = case
     
     if month == 'Sep':
         start_date = f'{year}-09-01T00'
@@ -59,12 +63,16 @@ def write_to_excel(year, month, level, region,
     nc_to_df(mcip_varlist,mcip,level,mask_da,dfout)
     nc_to_df(chem_varlist,chem,level,mask_da,dfout)
     
-    outputpath = datadir + 'Contribution/data/'
+    outputpath = datadir + f'Contribution/{case}/data/'
     dfout.to_excel(outputpath + f'SIM_{region}_{month}_{year}.xlsx',index=True)
     
     return None
 
-def write_obs_to_excel(year, month, city, city_en, varlist):
+def write_obs_to_excel(year, month, city, city_en, varlist,case=None):
+    if case is None:
+        case = 'Annually'
+    else:
+        case = case
     
     if month == 'Sep':
         start_date = f'{year}-09-01T00'
@@ -86,13 +94,14 @@ def write_obs_to_excel(year, month, city, city_en, varlist):
     for group in site_group.groups:
         city_site[group] = site_group.get_group(group)['监测点编码'].values
     
+    obspath = get_obspath(month)
     for var in varlist:
-        df = pd.read_excel(obsSep + f'site_{var}_{year}.xlsx',index_col=0)
+        df = pd.read_excel(obspath + f'site_{var}_{year}.xlsx',index_col=0)
         citymean = df[city_site[city]].mean(axis=1,skipna=True)
         dfout[var] = citymean.values
         print(f'Complete {var}')
         
-    outputpath = datadir + 'Contribution/data/'
+    outputpath = datadir + f'Contribution/{case}/data/'
     dfout.to_excel(outputpath + f'OBS_{city_en}_{month}_{year}.xlsx',index=True)
 
     return None
