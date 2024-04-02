@@ -14,8 +14,10 @@ def process_mcip(year, month):
     print('Processing MCIP for [ ' + month + ', ' + str(year) + ' ]')
 
     grid = xr.open_dataset('D:/Data/Graduation/GRID/GRIDCRO2D_D03.nc')
-    mcip = xr.open_dataset(f'D:/Data/Graduation/COMBINE/{month}/COMBINE_ACONC_CN3GD_152X110_{year}_noAPM_mcip.nc')
-    wind = xr.open_dataset(f'D:/Data/Graduation/COMBINE/{month}/COMBINE_ACONC_CN3GD_152X110_{year}_wind.nc')
+    # mcip = xr.open_dataset(f'D:/Data/Graduation/COMBINE/{month}/COMBINE_ACONC_CN3GD_152X110_{year}_noAPM_mcip.nc')
+    # wind = xr.open_dataset(f'D:/Data/Graduation/COMBINE/{month}/COMBINE_ACONC_CN3GD_152X110_{year}_wind.nc')
+    mcip = xr.open_dataset(f'F:/GRAD/COMBINE/{month}/COMBINE_ACONC_CN3GD_152X110_{year}_noAPM_mcip.nc')
+    wind = xr.open_dataset(f'F:/GRAD/COMBINE/{month}/COMBINE_ACONC_CN3GD_152X110_{year}_wind.nc')
 
     # convert layer to pressure
     preslevel=np.array(
@@ -37,28 +39,29 @@ def process_mcip(year, month):
 
     print('Creating dataset ...')
 
+    levels = 28
     days=1 # set spin-up days
     dataset=xr.Dataset(
         data_vars=dict(
             # ! vars from mcip
-            QV=(['time','level','y','x'],mcip.QV[days*24-8:-8-1,:21,:,:].data,{'long name':'Water Vapor Mixing Ratio','units':'kg kg-1'}),
-            RH=(['time','level','y','x'],RH[days*24-8:-8-1,:21,:,:].data,{'long name':'Relative Humidity on Surface','units':'%'}),
-            SFC_TMP=(['time','level','y','x'],mcip.SFC_TMP[days*24-8:-8-1,:21,:,:].data,{'long name':'Surface Temperature','units':'deg C'}),
-            AIR_TMP=(['time','level','y','x'],mcip.AIR_TMP[days*24-8:-8-1,:21,:,:].data,{'long name':'Air Temperature','units':'deg C'}),
-            PBLH=(['time','level','y','x'],mcip.PBLH[days*24-8:-8-1,:21,:,:].data,{'long name':'Planet Boundary Layer Height','units':'m'}),
-            SOL_RAD=(['time','level','y','x'],mcip.SOL_RAD[days*24-8:-8-1,:21,:,:].data,{'long name':'Solar Radiation','units':'W m-2'}),
-            PRES=(['time','level','y','x'],mcip.PRES[days*24-8:-8-1,:21,:,:].data,{'long name':'Air Pressure','units':'hPa'}),
-            precip=(['time','level','y','x'],mcip.precip[days*24-8:-8-1,:21,:,:].data,{'long name':'Precipitation','units':'cm'}),
-            WSPD10=(['time','level','y','x'],mcip.WSPD10[days*24-8:-8-1,:21,:,:].data,{'long name':'Wind Speed 10m','units':'m s-1'}),
-            WDIR10=(['time','level','y','x'],mcip.WDIR10[days*24-8:-8-1,:21,:,:].data,{'long name':'Wind Direction','units':'deg'}),
-            CloudFRAC=(['time','level','y','x'],mcip.CloudFRAC[days*24-8:-8-1,:21,:,:].data,{'long name':'Cloud Fraction','units':'1'}),
+            QV=(['time','level','y','x'],mcip.QV[days*24-8:-8-1,:levels,:,:].data,{'long name':'Water Vapor Mixing Ratio','units':'kg kg-1'}),
+            RH=(['time','level','y','x'],RH[days*24-8:-8-1,:levels,:,:].data,{'long name':'Relative Humidity on Surface','units':'%'}),
+            SFC_TMP=(['time','level','y','x'],mcip.SFC_TMP[days*24-8:-8-1,:levels,:,:].data,{'long name':'Surface Temperature','units':'deg C'}),
+            AIR_TMP=(['time','level','y','x'],mcip.AIR_TMP[days*24-8:-8-1,:levels,:,:].data,{'long name':'Air Temperature','units':'deg C'}),
+            PBLH=(['time','level','y','x'],mcip.PBLH[days*24-8:-8-1,:levels,:,:].data,{'long name':'Planet Boundary Layer Height','units':'m'}),
+            SOL_RAD=(['time','level','y','x'],mcip.SOL_RAD[days*24-8:-8-1,:levels,:,:].data,{'long name':'Solar Radiation','units':'W m-2'}),
+            PRES=(['time','level','y','x'],mcip.PRES[days*24-8:-8-1,:levels,:,:].data,{'long name':'Air Pressure','units':'hPa'}),
+            precip=(['time','level','y','x'],mcip.precip[days*24-8:-8-1,:levels,:,:].data,{'long name':'Precipitation','units':'cm'}),
+            WSPD10=(['time','level','y','x'],mcip.WSPD10[days*24-8:-8-1,:levels,:,:].data,{'long name':'Wind Speed 10m','units':'m s-1'}),
+            WDIR10=(['time','level','y','x'],mcip.WDIR10[days*24-8:-8-1,:levels,:,:].data,{'long name':'Wind Direction','units':'deg'}),
+            CloudFRAC=(['time','level','y','x'],mcip.CloudFRAC[days*24-8:-8-1,:levels,:,:].data,{'long name':'Cloud Fraction','units':'1'}),
             # ! vars from wind
-            uwind=(['time','level','y','x'],wind.UWind[days*24-8:-8-1,:21,:-1,:-1].data,{'long name':'U-direction Horizontal Wind Speed','units':'m s-1'}),
-            vwind=(['time','level','y','x'],wind.VWind[days*24-8:-8-1,:21,:-1,:-1].data,{'long name':'V-direction Horizontal Wind Speed','units':'m s-1'}),
+            uwind=(['time','level','y','x'],wind.UWind[days*24-8:-8-1,:levels,:-1,:-1].data,{'long name':'U-direction Horizontal Wind Speed','units':'m s-1'}),
+            vwind=(['time','level','y','x'],wind.VWind[days*24-8:-8-1,:levels,:-1,:-1].data,{'long name':'V-direction Horizontal Wind Speed','units':'m s-1'}),
         ),
         coords=dict(
             time=times,
-            level=pres[:21],
+            level=pres[:levels],
             latitude=(['y','x'],grid.LAT[0,0,:,:].data),
             longitude=(['y','x'],grid.LON[0,0,:,:].data),
         ),
@@ -73,7 +76,8 @@ def process_mcip(year, month):
     
     compression=dict(zlib=True,complevel=5)
     encoding={var:compression for var in dataset.data_vars}
-    dataset.to_netcdf(datadir + f'processed/{month}_{year}/{month}_{year}_mcip.nc',encoding=encoding)
+    # dataset.to_netcdf(datadir + f'processed/{month}_{year}/{month}_{year}_mcip.nc',encoding=encoding)
+    dataset.to_netcdf(datadir + f'processed/{month}_{year}/{month}_{year}_mcip_layers.nc',encoding=encoding)
     
     print('Completed!')
     print('==========')
